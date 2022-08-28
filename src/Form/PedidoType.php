@@ -22,7 +22,8 @@ Class PedidoType extends AbstractType {
                 ->add('nomecliente',TextType::class,['label'=>'Nome Completo: '])
                 ->add('endereco',TextType::class,['label'=>'Endereço:'])
                 ->add('telefone',TextType::class,['label'=>'Telefone:' ])
-                ->add('cpf',TextType::class,['label'=>'CPF:' ])
+                ->add('cpf',TextType::class,['label'=>'CPF:',
+                'attr' => ['data-mask' => '000.000.000-00'] ])
                 ->add('RealizarPedido',SubmitType::class);
 
     }   

@@ -31,7 +31,9 @@ Class ProdutoType extends AbstractType {
                         'expanded' =>true,
                         'required' => true
                   ))
-                  ->add('imagem', FileType::class,['mapped' => false])
+                  ->add('imagem', FileType::class,['mapped' => false,
+                  'attr' => ['accept' => 'image/jpg'],
+                  ])
                 
             
                 ->add('Salvar',SubmitType::class);
