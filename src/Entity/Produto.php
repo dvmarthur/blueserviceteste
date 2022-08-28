@@ -6,6 +6,10 @@ use App\Repository\ProdutoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use App\Entity\Author;
+use Symfony\Component\HttpFoundation\Response;
+
 
 #[ORM\Entity(repositoryClass: ProdutoRepository::class)]
 class Produto
@@ -16,18 +20,26 @@ class Produto
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
     private ?string $nome = null;
 
     #[ORM\Column]
+
+    #[Assert\NotBlank]
     private ?float $valor = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+
+    #[Assert\NotBlank]
     private ?string $imagem = null;
 
     #[ORM\Column(length: 255)]
+
+    #[Assert\NotBlank]
     private ?string $descricao = null;
 
     #[ORM\ManyToMany(targetEntity: Categoria::class, inversedBy: 'produtos')]
+    #[Assert\NotBlank]
     private Collection $categoria;
 
     public function __construct()

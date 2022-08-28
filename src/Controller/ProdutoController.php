@@ -125,7 +125,9 @@ class ProdutoController extends AbstractController
         $statusmsg = '';
         $produto = $produtoRepository->find($id);
         $file= $this->getParameter('kernel.project_dir')."/public/uploads/".$produto->getid()."-imagem.jpg";
-        unlink($file);
+        if(file_exists($file))
+             unlink($file);
+             
          $em->remove($produto);
          $em->flush();
         
