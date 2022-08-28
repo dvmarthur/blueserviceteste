@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220828215250 extends AbstractMigration
+final class Version20220828230205 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,6 +20,9 @@ final class Version20220828215250 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE SEQUENCE categoria_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE pedido_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
+        $this->addSql('CREATE SEQUENCE produto_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE categoria (id INT NOT NULL, nome VARCHAR(40) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE pedido (id INT NOT NULL, nomecliente VARCHAR(255) NOT NULL, endereco VARCHAR(255) NOT NULL, telefone VARCHAR(15) NOT NULL, cpf VARCHAR(15) NOT NULL, totalpedido DOUBLE PRECISION NOT NULL, metodopagamento VARCHAR(15) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE pedido_produto (pedido_id INT NOT NULL, produto_id INT NOT NULL, PRIMARY KEY(pedido_id, produto_id))');
@@ -38,7 +41,11 @@ final class Version20220828215250 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE SCHEMA heroku_ext');
         $this->addSql('CREATE SCHEMA public');
+        $this->addSql('DROP SEQUENCE categoria_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE pedido_id_seq CASCADE');
+        $this->addSql('DROP SEQUENCE produto_id_seq CASCADE');
         $this->addSql('ALTER TABLE pedido_produto DROP CONSTRAINT FK_3ED5C1B94854653A');
         $this->addSql('ALTER TABLE pedido_produto DROP CONSTRAINT FK_3ED5C1B9105CFD56');
         $this->addSql('ALTER TABLE produto_categoria DROP CONSTRAINT FK_D5E7E35C105CFD56');
