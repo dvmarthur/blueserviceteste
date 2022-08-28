@@ -28,7 +28,7 @@ Class ProdutoType extends AbstractType {
                         'choice_label' =>'nome',
                         'label' =>'Categoria: ',
                         'multiple' => true,
-                        'expanded' =>true,
+                        'expanded' =>true,                     
                         'required' => true
                   ))
                   ->add('imagem', FileType::class,['mapped' => false, 'constraints' => [

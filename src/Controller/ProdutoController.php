@@ -31,7 +31,6 @@ class ProdutoController extends AbstractController
     public function index(ProdutoRepository $produtoRepository): Response
     {
 
-
         $data['produtos'] = $produtoRepository->findAll();
         $data['titulo'] = 'Gerenciar Produto';
 
@@ -50,6 +49,21 @@ class ProdutoController extends AbstractController
         $form = $this->createForm(ProdutoType::class,$produto);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
+        
+           
+             
+            if(empty($_POST['produto']['categoria'])){
+                $msg='Impossivel cadastrar sem categoria';
+                $statusmsg='warning';
+                return $this->render('produto/form.html.twig', [
+                    'register_form' => $form->createView(),
+                    'msg'=> $msg,
+                    'statusmsg'=>$statusmsg
+                ]);
+            }
+
+
+
             $em->persist($produto);
             $uploadedFile = $form['imagem']->getData();
             $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
