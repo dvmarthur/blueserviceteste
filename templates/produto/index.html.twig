@@ -1,0 +1,59 @@
+
+{% extends 'base.html.twig' %}
+{% block title %} Blue Service Teste {% endblock %}
+
+{% block body %}
+
+       
+        <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Produtos</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Listar e criar produtos</p>
+                </div>
+            </div>
+        </header>
+        <!-- Section-->
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+<a href="{{path('produtoadicionar')}}" class="btn btn-primary"> + Adicionar </a>
+
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nome</th>
+      <th scope="col">Descricao</th>
+      <th scope="col">Valor</th>
+      <th scope="col">Imagem</th>
+
+     
+    </tr>
+  </thead>
+  <tbody>
+   {% for produto in produtos %}
+        <tr>
+             <th scope="row">{{produto.id}}</th>
+             <td>{{produto.nome}}</td>
+            <td>
+                <a href="{{path('produtoeditar',{id:produto.id})}}" class="btn btn-primary"> Editar </a>
+                <a href="{{path('produtoexcluir',{id:produto.id})}}" class="btn btn-primary"> Excluir </a>
+
+            </td>
+
+        </tr>
+    {% endfor %}
+    
+  </tbody>
+</table>                </div>
+            </div>
+        </section>
+    
+        
+{% endblock %}
+
+
+
+

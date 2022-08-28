@@ -1,0 +1,68 @@
+
+{% extends 'base.html.twig' %}
+{% block title %} Blue Service Teste {% endblock %}
+
+{% block body %}
+
+       
+        <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Produtos</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Listar e criar produtos</p>
+                </div>
+            </div>
+        </header>
+        <!-- Section-->
+        <section class="py-5">
+             
+
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-7 mt-4">
+          <nav aria-label="Breadcrumb navigation" role="navigation">
+            <ol class="breadcrumb links">
+              <li class="breadcrumb-item"><a class="link-pagina" href="{{path('index')}}">Página Inicial</a></li>           
+              <li class="breadcrumb-item active" aria-current="page">{{produto.nome}}</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+
+      <div class="row">
+        
+        <div class="col-sm-7">
+          
+           <img class = "foto2 mt-4 mb-4" src="{{ asset('/uploads/'~ produto.id ~'-imagem.jpg') }}" alt="Imagem Moto" Width='500px' height="300px"> 
+        </div>
+        
+        <div class="col-sm-5 mt-2">
+   {% for categoria in produto.categoria %}
+                                                
+          <h4>{{categoria.nome}}</h4>
+    {% endfor %}
+          <h1><b>{{produto.nome}}</b></h1>
+          <h2 class="mt-5">A partir de</h2>
+          <h3><b>R${{produto.valor}}</b></h3>
+                
+                <button type="button" class="btn btn-warning botao"><b>Adicionar ao carrinho</b></button>
+                
+            <h5 class="mt-5 mb-3">Descrição:</h5>
+            <div class=" mb-4">
+             {{produto.descricao}}
+            </div>
+        </div>
+      </div>
+    </div>
+
+ 
+        </section>
+    
+        
+{% endblock %}
+
+
+
+
