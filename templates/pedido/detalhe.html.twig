@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	Blue Service Teste
+{% endblock %}
+
+{% block body %}
+
+
+	<!-- Header-->
+	<header class="bg-dark py-5">
+		<div class="container px-4 px-lg-5 my-5">
+			<div class="text-center text-white">
+				<h1 class="display-4 fw-bolder">Pedidos</h1>
+				<p class="lead fw-normal text-white-50 mb-0">Detalhe do pedido</p>
+			</div>
+		</div>
+	</header>
+	<!-- Section-->
+	<section class="py-5">
+
+
+		<div class="container ">
+
+			<div class="row">
+				<div class="col-md-7 mt-4">
+					<nav aria-label="Breadcrumb navigation" role="navigation">
+						<ol class="breadcrumb links">
+							<li class="breadcrumb-item">
+								<a class="link-pagina" href="{{path('index')}}">Página Inicial</a>
+							</li>
+
+						</ol>
+					</nav>
+				</div>
+			</div>
+			<h1>Nome do cliente:
+				{{pedido.nomecliente}}
+			</h1>
+			<h1>Endereco:
+				{{pedido.endereco}}
+			</h1>
+			<h1>CPF:
+				{{pedido.cpf}}
+			</h1>
+			<h1>Telefone:
+				{{pedido.telefone}}
+			</h1>
+
+
+			<div class="row">
+				<div class="col-sm-5 mt-2">
+
+					<table class="table">
+						<thead class="thead-light">
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Produto</th>
+								<th scope="col">Valor</th>
+
+							</tr>
+						</thead>
+						<tbody>
+							{% for produto in pedido.produtos %}
+								<tr>
+									<th scope="row">{{produto.id}}</th>
+									<td>{{produto.nome}}</td>
+									<td>{{produto.valor}}</td>
+
+								</tr>
+							{% endfor %}
+
+						</tbody>
+					</table>
+
+
+				</div>
+			</div>
+		</div>
+
+
+	</section>
+
+
+{% endblock %}

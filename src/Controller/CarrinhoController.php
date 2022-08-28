@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 session_start();
+
+use App\Entity\Pedido;
 use App\Entity\Produto;
-use App\Form\ProdutoType;
+use App\Form\PedidoType;
+use App\Repository\PedidoRepository;
 use App\Repository\ProdutoRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,16 +31,34 @@ class CarrinhoController extends AbstractController
     /**
      * @Route("/carrinho",name="carrinhoindex")
      */
-    public function index(): Response
+    public function index(Request $request,ProdutoRepository $produtoRepository,EntityManagerInterface $em): Response
     {
-    
+        
+        $msg = "";
+        $statusmsg= '';
         $prodscarrinho = '';
-       
+        $pedido = new Pedido;
        if(isset($_SESSION['produtos'])){
        $prodscarrinho = $_SESSION['produtos'];
        }
-        
-        return $this->render('carrinho/index.html.twig',['prodscarrinho'=>$prodscarrinho]);
+       $form = $this->createForm(PedidoType::class,$pedido);
+       $form->handleRequest($request);
+       if($form->isSubmitted() && $form->isValid()){
+
+            foreach($_SESSION['produtos'] as $k => $v){
+                $produto = $produtoRepository->find($k);
+                $pedido->addProduto($produto);
+            }
+
+          
+            $em->persist($pedido);
+            $em->flush();
+           $msg = "Pedido Realizado com Sucesso!";
+           $statusmsg= 'success';
+            
+       }
+
+        return $this->render('carrinho/index.html.twig',['prodscarrinho'=>$prodscarrinho,'msg'=>$msg,'statusmsg'=>$statusmsg,'form'=>$form->createView()]);
     }
 
     /**
@@ -47,7 +68,7 @@ class CarrinhoController extends AbstractController
     {   
         
         $produto = $produtoRepository->find($prodid);
-        $compras = $this->addProduto($produto,'12');
+        $compras = $this->addProduto($produto,'1');
 
         return $this->redirectToRoute('carrinhoindex');
     }
@@ -77,17 +98,21 @@ class CarrinhoController extends AbstractController
     }
 
 
-    public function removeProduto($produto,$quantidade)
+    /**
+     * @Route("/carrinho/remove/{prodid}",name="carrinhoremove")
+     */
+    public function remove($prodid)
     {
-        
+       
         if (session_status() === PHP_SESSION_NONE) {
            return "Sem produtos no carrinho";
+           return $this->redirectToRoute('carrinhoindex');
         }
-        if(array_key_exists($produto->getId(),$_SESSION['produtos'])){
-            unset($_SESSION['produtos'][$produto->getId()]);
+        if(array_key_exists($prodid,$_SESSION['produtos'])){
+            unset($_SESSION['produtos'][$prodid]);
           }
        
-        return true;
+          return $this->redirectToRoute('carrinhoindex');
     }
 
      /**

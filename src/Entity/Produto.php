@@ -131,25 +131,25 @@ class Produto
 
         return $this;
     }
-    // public function getEntityManager(EntityManagerInterface $em): EntityManager
-    // {
-    //     return $em->doctrine->getManager();
-    // }
+    public function getEntityManager(EntityManagerInterface $em): EntityManager
+    {
+        return $em->doctrine->getManager();
+    }
 
 
-    // public function SearchByNome(int $nome,EntityManagerInterface $em): array
-    // {
-    //     $conn = $em->$this->getEntityManager()->getConnection();
+    public function SearchByNome(int $nome,EntityManagerInterface $em): array
+    {
+        $conn = $em->$this->getEntityManager()->getConnection();
 
-    //     $sql = "
-    //         SELECT * FROM produto where nome ILIKE '%:nome%' ORDER BY ID DESC
-    //         ";
-    //     $stmt = $conn->prepare($sql);
-    //     $resultSet = $stmt->executeQuery(['nome' => $nome]);
+        $sql = "
+            SELECT * FROM produto where nome ILIKE '%:nome%' ORDER BY ID DESC
+            ";
+        $stmt = $conn->prepare($sql);
+        $resultSet = $stmt->executeQuery(['nome' => $nome]);
 
-    //     // returns an array of arrays (i.e. a raw data set)
-    //     return $resultSet->fetchAllAssociative();
-    // }
+        // returns an array of arrays (i.e. a raw data set)
+        return $resultSet->fetchAllAssociative();
+    }
 
     /**
      * @return Collection<int, Pedido>

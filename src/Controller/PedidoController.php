@@ -3,9 +3,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Pedido;
 use App\Entity\Produto;
 use App\Form\ProdutoType;
 use App\Repository\ProdutoRepository;
+use App\Repository\PedidoRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\Entity;
@@ -28,127 +30,46 @@ class PedidoController extends AbstractController
 
 {
     /**
-     * @Route("/produto",name="produtoindex")
+     * @Route("/pedidos",name="pedidosindex")
      */
-    public function index(ProdutoRepository $produtoRepository): Response
+    public function index(PedidoRepository $pedidoRepository): Response
     {
-
-
-        $data['produtos'] = $produtoRepository->findAll();
+        $data['pedidos'] = $pedidoRepository->findAll();
         $data['titulo'] = 'Gerenciar Produto';
 
-        return $this->render('produto/index.html.twig',$data);
+        return $this->render('pedido/index.html.twig',$data);
     }
 
     /**
-     * @Route("/produto/adicionar",name="produtoadicionar")
+     * @Route("/pedidos/detalhe/{pedidoid}",name="pedidosdetalhe")
      */
-    public function adicionar(Request $request,EntityManagerInterface $em): Response
-    {
-       
-        $msg= '';
-        $statusmsg= '';
-        $produto = new Produto;
-        $form = $this->createForm(ProdutoType::class,$produto);
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
-            $em->persist($produto);
-            $uploadedFile = $form['imagem']->getData();
-            $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
-            $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $newFilename = $produto->getid()."-imagem.jpg";
-            $produto->setImagem($produto->getid()."-imagem.jpg");
-
-            $uploadedFile->move(
-                $destination,
-                $newFilename
-            );
-            $em->persist($produto);
-            $em->flush();
-            $msg = "Produto Adicionado com sucesso!";
-            $statusmsg= 'success';
-             
-        }
-        return $this->render('produto/form.html.twig', [
-            'register_form' => $form->createView(),
-            'msg'=> $msg,
-            'statusmsg'=>$statusmsg
-        ]);
-    }
-
-
-    /**
-     * @Route("/produto/editar/{id}",name="produtoeditar")
-     */
-    public function editar($id,Request $request, EntityManagerInterface $em,ProdutoRepository $produtoRepository): Response
+    public function detalhe($pedidoid,PedidoRepository $pedidoRepository): Response
     {
         $msg = '';
         $statusmsg = '';
-        $produto = $produtoRepository->find($id);
-        $form = $this->createForm(ProdutoType::class,$produto);
-        $form->handleRequest($request);
+        $pedido = $pedidoRepository->find($pedidoid);
 
-
-        if($form->isSubmitted() && $form->isValid()){
-
-            $em->persist($produto);
-            $uploadedFile = $form['imagem']->getData();
-            $produto->setImagem($produto->getid()."-imagem.jpg");
-            $destination = $this->getParameter('kernel.project_dir').'/public/uploads';
-            $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $newFilename = $produto->getid()."-imagem.jpg";
-            $uploadedFile->move(
-                $destination,
-                $newFilename
-            );
-            $em->persist($produto);
-             $em->flush();
-            $msg = "produto Atualizado com sucesso!";
-            $statusmsg= 'success';
-             
-        }
-        return $this->render('produto/form.html.twig', [
-            'register_form' => $form->createView(),
+        return $this->render('pedido/detalhe.html.twig', [
+            'pedido'=>$pedido,
             'msg'=> $msg,
             'statusmsg'=>$statusmsg
         ]);
     }
 
      /**
-     * @Route("/produto/excluir/{id}",name="produtoexcluir")
+     * @Route("/pedido/excluir/{id}",name="pedidoexcluir")
      */
-    public function excluir($id,Request $request, EntityManagerInterface $em,ProdutoRepository $produtoRepository,Filesystem $filesystem): Response
+    public function excluir($id,Request $request, EntityManagerInterface $em,PedidoRepository $pedidoRepository): Response
     {
 
 
         $msg = '';
         $statusmsg = '';
-        $produto = $produtoRepository->find($id);
-        $file= $this->getParameter('kernel.project_dir')."/public/uploads/".$produto->getid()."-imagem.jpg";
-        if(file_exists($file))
-             unlink($file);
+        $pedido = $pedidoRepository->find($id);
              
-         $em->remove($produto);
+         $em->remove($pedido);
          $em->flush();
         
-        return $this->redirectToRoute('produtoindex');
-    }
-
-     /**
-     * @Route("/produto/detalhe/{id}",name="produtodetalhe")
-     */
-    public function detalhe($id,Request $request, EntityManagerInterface $em,ProdutoRepository $produtoRepository): Response
-    {
-        $msg = '';
-        $statusmsg = '';
-        $produto = $produtoRepository->find($id);
-       
-
-
-        return $this->render('produto/detalhe.html.twig', [
-            'produto'=>$produto,
-            'msg'=> $msg,
-            'statusmsg'=>$statusmsg
-        ]);
+        return $this->redirectToRoute('pedidosindex');
     }
 }

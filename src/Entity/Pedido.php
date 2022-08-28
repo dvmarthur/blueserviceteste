@@ -15,7 +15,7 @@ class Pedido
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Produto::class, inversedBy: 'pedido')]
+    #[ORM\ManyToMany(targetEntity: Produto::class, inversedBy: 'produto')]
     private Collection $produtos;
 
     #[ORM\Column(length: 255)]
@@ -31,10 +31,10 @@ class Pedido
     private ?string $cpf = null;
 
     #[ORM\Column]
-    private ?float $totalpedido = null;
+    private ?float $totalpedido = 10;
 
     #[ORM\Column(length: 15)]
-    private ?string $metodopagamento = null;
+    private ?string $metodopagamento = 'cartao';
 
     public function __construct()
     {

@@ -9,6 +9,8 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
+
 
 class IndexController extends AbstractController
 
@@ -19,14 +21,43 @@ class IndexController extends AbstractController
    public function index(ProdutoRepository $produto): Response
    {  
 
-      // $form = $this->createForm(ProdutoType::class,$produto, [
-      //    'method' => 'GET'
-      // ]);
        
       $produtos = $produto->findAll();
 
       return $this->render('index/paginaprincipal.html.twig', ['produtos' => $produtos]);
    }
+   /**
+    * @Route("/index/search",name="indexsearch")
+    */
+    public function search(ProdutoRepository $produto,EntityManagerInterface $em): Response
+    {  
+ 
+      $nome = $_GET['nome'];
+      
+      // $prod= $em->createQueryBuilder('c')
+      // ->andWhere('c.nome LIKE :nome')
+      // ->setParameter('nome', $nome)
+      // ->getQuery()
+      // ->getResult()
+      // ;
+
+      // $nome = 'Monitor samsung 144hz';
+      // $qb = $produto->createQueryBuilder('c');
+      // $qb->where("LOWER(c.nome) LIKE ?", $nome)
+      //    ->setParameter('nome', $nome);
+      // $prod = $qb->getQuery()->getArrayResult();
+
+      
+      $prod[]=$em->getConnection()->executeQuery(
+         "select * from produto where nome ILIKE '%{$nome}%'
+         ",
+     )->fetchAssociative();
+
+         if($prod[0]==false)
+         return $this->redirectToRoute('index');
+
+       return $this->render('index/paginaprincipal.html.twig', ['produtos' => $prod]);
+    }
 
 
    // public function searchAction(Request $request, string $value, Region $region, category $category): Response

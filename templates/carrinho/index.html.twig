@@ -18,7 +18,6 @@
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-<a href="{{path('produtoadicionar')}}" class="btn btn-primary"> + Adicionar </a>
 
 <table class="table">
   <thead class="thead-light">
@@ -35,8 +34,9 @@
              <th scope="row">{{produto.nome}}</th>
              <td>{{produto.quantidade}}</td>
             <td>
-                <a href="{{path('produtoeditar',{id:produto.id})}}" class="btn btn-primary"> Editar </a>
-                <a href="{{path('produtoexcluir',{id:produto.id})}}" class="btn btn-primary"> Excluir </a>
+              
+                <a href="{{path('carrinhoremove',{prodid:produto.id})}}" class="btn btn-primary"> Remover do carrinho </a>
+                {# <a href="{{path('produtoexcluir',{id:produto.id})}}" class="btn btn-primary"> Excluir </a> #}
 
             </td>
 
@@ -45,10 +45,31 @@
     
   </tbody>
 </table>                </div>
+
+    <h1>DADOS PESSOAIS </h1>
+   {{ form_start(form) }}
+     {# {% for produto in prodscarrinho %}
+      <input type="hidden" id="pedido_produto_{{produto.id}}" value="{{produto.id}}" name="pedido[produtos][]">
+      {% endfor %} #}
+{{ form_end(form) }}
+   
             </div>
         </section>
     
-        
+            {% if msg %}
+
+            <script>
+                  Swal.fire({
+                  icon: '{{statusmsg}}',
+                  title: '{{msg}}',
+                  showConfirmButton: false,
+                 timer: 1500
+                  }).then(function() {
+    window.location = "/";
+});
+            </script>
+
+        {% endif %}
 {% endblock %}
 
 

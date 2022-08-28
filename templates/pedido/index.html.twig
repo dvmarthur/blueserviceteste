@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	Blue Service Teste
+{% endblock %}
+
+{% block body %}
+
+
+	<!-- Header-->
+	<header class="bg-dark py-5">
+		<div class="container px-4 px-lg-5 my-5">
+			<div class="text-center text-white">
+				<h1 class="display-4 fw-bolder">Pedidos</h1>
+				<p class="lead fw-normal text-white-50 mb-0">Listar pedidos</p>
+			</div>
+		</div>
+	</header>
+	<!-- Section-->
+	<section class="py-5">
+		<div class="container px-4 px-lg-5 mt-5">
+			<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+				<table class="table">
+					<thead class="thead-light">
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Cliente</th>
+							<th scope="col">CPF</th>
+							<th scope="col">Telefone</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						{% for pedido in pedidos %}
+							<tr>
+								<th scope="row">{{pedido.id}}</th>
+								<td>{{pedido.nomecliente}}</td>
+								<td>{{pedido.cpf}}</td>
+								<td>{{pedido.telefone}}</td>
+								<td>
+									<a href="{{path('pedidosdetalhe',{pedidoid:pedido.id})}}" class="btn btn-primary">
+										Detalhes
+									</a>
+									<a href="{{path('pedidoexcluir',{id:pedido.id})}}" class="btn btn-primary">
+										Excluir
+									</a>
+
+								</td>
+							</tr>
+						{% endfor %}
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section>
+
+
+{% endblock %}
