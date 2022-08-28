@@ -47,8 +47,8 @@
           <h2 class="mt-5">A partir de</h2>
           <h3><b>R${{produto.valor}}</b></h3>
                 
-                <button type="button" class="btn btn-warning botao"><b>Adicionar ao carrinho</b></button>
-                
+                  <a href="{{path('carrinhoadicionar',{prodid:produto.id})}}" class="btn btn-primary"><b> Adicionar ao carrinho </b></a>
+
             <h5 class="mt-5 mb-3">Descrição:</h5>
             <div class=" mb-4">
              {{produto.descricao}}

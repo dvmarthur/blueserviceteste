@@ -8,7 +8,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Entity\Author;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityManagerInterface;
+
 
 
 #[ORM\Entity(repositoryClass: ProdutoRepository::class)]
@@ -42,12 +45,16 @@ class Produto
     #[Assert\NotBlank]
     private Collection $categoria;
 
+    #[ORM\ManyToMany(targetEntity: Pedido::class, mappedBy: 'produtos')]
+    private Collection $pedido;
+
     public function __construct()
     {
         $this->categoria = new ArrayCollection();
+        $this->pedido = new ArrayCollection();
     }
 
-    
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,6 +128,52 @@ class Produto
     public function removeCategorium(Categoria $categorium): self
     {
         $this->categoria->removeElement($categorium);
+
+        return $this;
+    }
+    // public function getEntityManager(EntityManagerInterface $em): EntityManager
+    // {
+    //     return $em->doctrine->getManager();
+    // }
+
+
+    // public function SearchByNome(int $nome,EntityManagerInterface $em): array
+    // {
+    //     $conn = $em->$this->getEntityManager()->getConnection();
+
+    //     $sql = "
+    //         SELECT * FROM produto where nome ILIKE '%:nome%' ORDER BY ID DESC
+    //         ";
+    //     $stmt = $conn->prepare($sql);
+    //     $resultSet = $stmt->executeQuery(['nome' => $nome]);
+
+    //     // returns an array of arrays (i.e. a raw data set)
+    //     return $resultSet->fetchAllAssociative();
+    // }
+
+    /**
+     * @return Collection<int, Pedido>
+     */
+    public function getPedido(): Collection
+    {
+        return $this->pedido;
+    }
+
+    public function addPedido(Pedido $pedido): self
+    {
+        if (!$this->pedido->contains($pedido)) {
+            $this->pedido->add($pedido);
+            $pedido->addProduto($this);
+        }
+
+        return $this;
+    }
+
+    public function removePedido(Pedido $pedido): self
+    {
+        if ($this->pedido->removeElement($pedido)) {
+            $pedido->removeProduto($this);
+        }
 
         return $this;
     }

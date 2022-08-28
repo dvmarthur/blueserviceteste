@@ -23,7 +23,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 
 
-class ProdutoController extends AbstractController
+class PedidoController extends AbstractController
+
+
 {
     /**
      * @Route("/produto",name="produtoindex")

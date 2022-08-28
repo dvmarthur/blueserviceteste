@@ -17,8 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 class CategoriaController extends AbstractController
-
-
 {
     /**
      * @Route("/categoria",name="categoriaindex")
