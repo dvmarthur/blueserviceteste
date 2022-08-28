@@ -13,38 +13,35 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
 
-
 Class ProdutoType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        
+
        $builder
                 ->add('nome',TextType::class,['label'=>'Nome do Produto: '])
                 ->add('valor',MoneyType::class,['label'=>'Valor:',
                 'divisor' => 100, ])
-                ->add('descricao',TextType::class,['label'=>'Descrição:' ])
+                ->add('descricao',TextType::class,['label'=>'Descrição:'])
                 ->add('categoria',EntityType::class, array(
-                  'class' => Categoria::class,
-                  'choice_label' =>'nome',
-                  'label' =>'Categoria: ',
-                  'multiple' => true,
-                  'expanded' =>true,
-                  'required' => true
-            ))
-                ->add('imagem', FileType::class,['mapped' => false, 'constraints' => [
-                  new File([
-                      'maxSize' => '1024k',
-                      'mimeTypes' => [
-                          'application/pdf',
-                          'application/x-pdf',
-                      ],
-                      'mimeTypesMessage' => 'Please upload a valid PDF document',
-                  ])
-              ]])
-  
+                        'class' => Categoria::class,
+                        'choice_label' =>'nome',
+                        'label' =>'Categoria: ',
+                        'multiple' => true,
+                        'expanded' =>true,
+                        'required' => true
+                  ))
+                  ->add('imagem', FileType::class,['mapped' => false, 'constraints' => [
+                      new File([
+                          'maxSize' => '1024k',
+                          'mimeTypes' => [
+                              'image/jpeg',
+                          ],
+                          'mimeTypesMessage' => 'Por favor insira uma imagem no formato jpg',
+                      ])
+                  ]])
                 ->add('Salvar',SubmitType::class);
 
-    }   
+    }
 
 }
