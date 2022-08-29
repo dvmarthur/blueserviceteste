@@ -34,6 +34,10 @@ class CarrinhoController extends AbstractController
     public function index(Request $request,ProdutoRepository $produtoRepository,EntityManagerInterface $em): Response
     {
         
+
+      
+
+
         $msg = "";
         $statusmsg= '';
         $prodscarrinho = '';
@@ -43,6 +47,12 @@ class CarrinhoController extends AbstractController
        }
        $form = $this->createForm(PedidoType::class,$pedido);
        $form->handleRequest($request);
+
+       if(!isset($_SESSION['produtos'])){
+        $msg = "Sem produtos no carrinho para realizar pedido";
+        $statusmsg= 'warning';
+        return $this->render('carrinho/index.html.twig',['prodscarrinho'=>$prodscarrinho,'msg'=>$msg,'statusmsg'=>$statusmsg,'form'=>$form->createView()]);
+      }
        if($form->isSubmitted() && $form->isValid()){
 
             foreach($_SESSION['produtos'] as $k => $v){
