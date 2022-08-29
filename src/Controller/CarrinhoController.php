@@ -33,10 +33,6 @@ class CarrinhoController extends AbstractController
      */
     public function index(Request $request,ProdutoRepository $produtoRepository,EntityManagerInterface $em): Response
     {
-        
-
-      
-
 
         $msg = "";
         $statusmsg= '';
