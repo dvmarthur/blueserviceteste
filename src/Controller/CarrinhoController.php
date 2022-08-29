@@ -59,6 +59,7 @@ class CarrinhoController extends AbstractController
 
             $em->persist($pedido);
             $em->flush();
+            $this->limparcarrinho();
             $msg = "Pedido Realizado com Sucesso!";
             $statusmsg = 'success';
         }

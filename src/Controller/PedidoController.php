@@ -35,7 +35,7 @@ class PedidoController extends AbstractController
     public function index(PedidoRepository $pedidoRepository): Response
     {
         $data['pedidos'] = $pedidoRepository->findAll();
-        $data['titulo'] = 'Gerenciar Produto';
+       
 
         return $this->render('pedido/index.html.twig',$data);
     }

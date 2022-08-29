@@ -25,7 +25,7 @@ class CategoriaController extends AbstractController
     {
 
         $data['categorias'] = $categoriaRepository->findAll();
-        $data['titulo'] = 'Gerenciar Categorias';
+      
 
         return $this->render('categoria/index.html.twig',$data);
     }
