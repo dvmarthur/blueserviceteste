@@ -19,12 +19,13 @@ class IndexController extends AbstractController
     * @Route("/",name="index")
     */
    public function index(ProdutoRepository $produto): Response
-   {  
+   {   
 
+      $msg ='';
        
       $produtos = $produto->findAll();
 
-      return $this->render('index/paginaprincipal.html.twig', ['produtos' => $produtos]);
+      return $this->render('index/paginaprincipal.html.twig', ['produtos' => $produtos,'msg'=>$msg]);
    }
    /**
     * @Route("/index/search",name="indexsearch")
@@ -33,67 +34,22 @@ class IndexController extends AbstractController
     {  
  
       $nome = $_GET['nome'];
-      
-      // $prod= $em->createQueryBuilder('c')
-      // ->andWhere('c.nome LIKE :nome')
-      // ->setParameter('nome', $nome)
-      // ->getQuery()
-      // ->getResult()
-      // ;
-
-      // $nome = 'Monitor samsung 144hz';
-      // $qb = $produto->createQueryBuilder('c');
-      // $qb->where("LOWER(c.nome) LIKE ?", $nome)
-      //    ->setParameter('nome', $nome);
-      // $prod = $qb->getQuery()->getArrayResult();
-
-      
+      $msg = '';
       $prod[]=$em->getConnection()->executeQuery(
          "select * from produto where nome ILIKE '%{$nome}%'
          ",
      )->fetchAssociative();
 
-         if($prod[0]==false)
-         return $this->redirectToRoute('index');
+         if($prod[0]==false || empty($nome)){
+            $msg = "Sem resultados,Exibindo todos!";
+            $prod = $produto->findAll();
+            return $this->render('index/paginaprincipal.html.twig', ['produtos' => $prod,'msg'=>$msg]);
+         }
 
-       return $this->render('index/paginaprincipal.html.twig', ['produtos' => $prod]);
+        
+       return $this->render('index/paginaprincipal.html.twig', ['produtos' => $prod,'msg'=>$msg]);
     }
 
 
-   // public function searchAction(Request $request, string $value, Region $region, category $category): Response
-   // {
-   //    $form = $this->createForm(SearchType::class, null, [
-   //       'method' => 'GET'
-   //    ]);
-   //    $form->handleRequest($request);
-
-   //    if ($form->isSubmitted() && $form->isValid()) {
-   //       $value = $form->getData()->getTitle();
-   //       $search = $this->getDoctrine()->getRepository(Advertisement::class)->findBySearch($value, $region, $category);
-
-   //       return $this->render('search/result.html.twig', [
-   //          'results' => $search
-   //       ]);
-   //    }
-   //    return $this->render('search/search.html.twig', [
-   //       'form' => $form->createView()
-   //    ]);
-   // }
-
-   // public function findBySearch(string $value, Region $region, Category $category)
-
-   // {
-   //    return $this->createQueryBuilder('a')
-   //       ->where('a.category = :category')
-   //       ->andWhere('a.region = :region')
-   //       ->andWhere('a.title LIKE :value')
-   //       ->orWhere('a.description LIKE :value')
-   //       ->setParameters([
-   //          'value' => $value,
-   //          'region' => $region,
-   //          'category' => $category
-   //       ])
-   //       ->getQuery()
-   //       ->getResult();
-   // }
+  
 }
